@@ -21,17 +21,19 @@ class WindSpeed(object):
         self.int_pin.callback(Pin.IRQ_RISING, self.callback)
         self.last_pin_value = self.int_pin.value()
         self.interrupt_OK = True
+        self.rising_counter = 0
 
 
     def callback(self, arg):
         now = utime.ticks_ms()
+        self.interrupt_OK = True
+        self.rising_counter = 0
         if utime.ticks_diff(now, self.last_int_ms) > 10:
             self.count += 1
             self.gust_count += 1
             self.instant_wind_speed = 1/(utime.ticks_diff(now, self.last_int_ms)/1000)*2.4
             self.last_int_ms = now
             self.wind_dir.update()
-            self.interrupt_OK = True
 
 
     def update(self):
@@ -51,11 +53,12 @@ class WindSpeed(object):
 
 
     def check_interrupt_state(self):
-        if self.count == 0:
-            pin_value = self.int_pin.value()
-            if pin_value and not self.last_pin_value:
+        pin_value = self.int_pin.value()
+        if pin_value and not self.last_pin_value:
+            self.rising_counter += 1
+            if self.rising_counter > 3:
                 self.interrupt_OK = False
-            self.last_pin_value = pin_value
+        self.last_pin_value = pin_value
 
 
     def is_interrupt_OK(self):

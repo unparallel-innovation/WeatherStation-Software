@@ -51,6 +51,7 @@ def check_battery(battery, radiation):
 def check_stuck_interrupts(wind_speed):
     if not wind_speed.is_interrupt_OK():
         print("Interrupt error! Restarting WeatherStation...")
+        utime.sleep(1)
         machine.reset()
 
 
@@ -213,6 +214,7 @@ def main():
 
             if utime.ticks_diff(now, last_read_sensors) >= config.sensors_read_interval:
                 last_read_sensors = utime.ticks_add(last_read_sensors, config.sensors_read_interval)
+                check_stuck_interrupts(wind_speed)
                 if not read_sensors(temperature, humidity, battery):
                     reset_AM2315(i2c, am2315_pwr_pin)
 
@@ -222,7 +224,6 @@ def main():
 
             if utime.ticks_diff(now, last_send_values) >= config.send_interval:
                 last_send_values = utime.ticks_add(last_send_values, config.send_interval)
-                check_stuck_interrupts(wind_speed)
                 send_values(sigfox, wlan, temperature, humidity, rain, wind_speed, wind_dir, radiation, battery, first_send_after_reset)
                 first_send_after_reset = False
 
