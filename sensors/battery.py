@@ -33,8 +33,8 @@ class Battery(object):
 
 
     def get_instant_V(self):
-        vbatlevel = ((200+499)/(200))*self.battery_V_adc.voltage()
-        return round(((vbatlevel/1000)*0.97),2)
+        vbatlevel = ((200+499)/(200))*self.battery_V_adc.voltage()/1000
+        return vbatlevel
 
 
     def get_count(self):
