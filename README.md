@@ -186,6 +186,7 @@ After changing the configuration in [config.py](config.py) the sotware needs to 
 ## Related Repositories:
 *  [Unparallel WeatherStation PCB](https://github.com/unparallel-innovation/WeatherStation-PCB)
 *  [Unparallel WeatherStation Enclosure](https://github.com/unparallel-innovation/WeatherStation-Enclosure)
+*  [Unparallel WeatherStation Documentation](https://github.com/unparallel-innovation/WeatherStation-Documentation)
 *  [Unparallel WeatherStation Connector](https://github.com/unparallel-innovation/WeatherStation-Connector)
 
 
